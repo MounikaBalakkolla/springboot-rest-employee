@@ -1,20 +1,8 @@
-pipeline{
-    agent any
-    tools{
-        maven "maven3.8.1"
-    }
-    stages{
-        stage("build"){
-            steps{
-                sh "mvn --version"
-                sh "mvn clean install"
-            }
-        }
-
-    }
-    post{
-        always{
-            cleanWs()
-        }
-    }
-}
+node{
+  stage('SCM Checkout'){
+    git 'https://github.com/MounikaBalakkolla/springboot-rest-employee.git'
+  }
+  stage('Compile-Package'){
+    def mvnHome =  tool name: 'Maven', type: 'maven'
+    sh "${mvnHome}/bin/mvn package"
+  }
